@@ -5,7 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import web.model.User;
-import web.service.UserService;
+import web.service.UserServiceImpl;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -14,11 +14,11 @@ import java.util.*;
 @Controller
 public class UserController {
     @Autowired
-    UserService userService;
+    UserServiceImpl userServiceImpl;
     @GetMapping("/")
     public String index (ModelMap map) {
 
-        List <User> users = userService.getUsers();
+        List <User> users = userServiceImpl.getUsers();
         map.addAttribute("users", users);
 
      return"index";
@@ -36,12 +36,12 @@ public class UserController {
         user.setName(name);
         user.setAge(date1);
         user.setLastName(lastName);
-        userService.addUser(user);
+        userServiceImpl.addUser(user);
         return "redirect:/";
     }
     @PostMapping("/delete")
     public String postUser (@RequestParam(value = "id") long id)  {
-       userService.deleteUser(id);
+       userServiceImpl.deleteUser(id);
         return "redirect:/";
     }
     @PostMapping("/update")
@@ -53,12 +53,12 @@ public class UserController {
         user.setName(name);
         user.setAge(date1);
         user.setLastName(lastName);
-        userService.updateUser(id,user);
+        userServiceImpl.updateUser(id,user);
         return "redirect:/";
     }
     @PostMapping("/clean")
     public String cleanTable(){
-        userService.cleanTable();
+        userServiceImpl.cleanTable();
         return "redirect:/";
     }
 }
